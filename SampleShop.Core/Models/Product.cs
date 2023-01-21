@@ -12,7 +12,7 @@ namespace SampleShop.Core.Models
     {
         public string Id { get; set; }
         [StringLength(20)]
-        [DisplayName("PrductName")]
+        [DisplayName("Product Name")]
         public string Name { get; set; }
         public string Description { get; set; }
         [Range(0,1000)]
