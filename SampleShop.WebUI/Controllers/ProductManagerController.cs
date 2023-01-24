@@ -11,18 +11,18 @@ namespace SampleShop.WebUI.Controllers
 {
     public class ProductManagerController : Controller
     {
-        ProductRepository context;
-        ProductCategoryRepository productCategories;
+        InMemoryRepository<Product> context;
+        InMemoryRepository<ProductCategory> productCategories;
 
         public ProductManagerController()
         {
-            context = new ProductRepository();
-            productCategories = new ProductCategoryRepository();
+            context = new InMemoryRepository<Product>();
+            productCategories = new InMemoryRepository<ProductCategory>();
         }
         // GET: ProductManager
         public ActionResult Index()
         {
-            List<Product> products = context.GetProducts().ToList();
+            List<Product> products = context.GetAll().ToList();
             return View(products);
         }
 
@@ -30,7 +30,7 @@ namespace SampleShop.WebUI.Controllers
         {
             ProductManagerViewModel viewModel = new ProductManagerViewModel();
             viewModel.Product = new Product();
-            viewModel.ProductCategories = productCategories.GetProducts();
+            viewModel.ProductCategories = productCategories.GetAll();
             return View(viewModel);
         }
 
@@ -42,7 +42,7 @@ namespace SampleShop.WebUI.Controllers
                 return View(product);
             }
 
-            context.Insert(product);
+            context.Create(product);
             context.Commit();
             return RedirectToAction("Index");
         }
@@ -57,7 +57,7 @@ namespace SampleShop.WebUI.Controllers
             
             ProductManagerViewModel viewModel = new ProductManagerViewModel();
             viewModel.Product = product;
-            viewModel.ProductCategories = productCategories.GetProducts();
+            viewModel.ProductCategories = productCategories.GetAll();
             return View(viewModel);
         }
 
