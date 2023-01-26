@@ -1,4 +1,5 @@
-﻿using SampleShop.Core.Models;
+﻿using SampleShop.Core.Contracts;
+using SampleShop.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace SampleShop.DataAccess.InMemory
 {
-    public class InMemoryRepository<T> where T : BaseEntity
+    public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
     {
         ObjectCache cache = MemoryCache.Default;
         List<T> items;
-            string className;
+        string className;
 
         public InMemoryRepository()
         {
@@ -22,7 +23,7 @@ namespace SampleShop.DataAccess.InMemory
             {
                 items = new List<T>();
             }
-        } 
+        }
 
         public void Commit()
         {
@@ -52,15 +53,15 @@ namespace SampleShop.DataAccess.InMemory
         public void Update(T t)
         {
             T tToUpdate = items.Find(i => i.Id == t.Id);
-            
+
             if (tToUpdate == null)
             {
                 throw new Exception(className + " not found!");
             }
-            
+
             tToUpdate = t;
         }
-              
+
         public void Delete(string id)
         {
             T tToDelete = items.Find(i => i.Id == id);
