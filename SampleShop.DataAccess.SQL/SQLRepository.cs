@@ -35,7 +35,9 @@ namespace SampleShop.DataAccess.SQL
         {
             var t = Get(id);
             if (context.Entry(t).State == EntityState.Detached)
-                dbSet.Remove(t);
+                dbSet.Attach(t);
+                
+            dbSet.Remove(t);
         }
 
         public T Get(string id)
