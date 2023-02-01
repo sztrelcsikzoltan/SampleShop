@@ -1,5 +1,6 @@
 ﻿using SampleShop.Core.Contracts;
 using SampleShop.Core.Models;
+using SampleShop.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,25 @@ namespace SampleShop.WebUI.Controllers
             productCategories = productCategoryContext;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string category=null)
         {
-            List<Product> products = context.GetAll().ToList();
-            return View(products);
+            // List<Product> products = context.GetAll().ToList();
+            List<Product> products;
+            List<ProductCategory> categories = productCategories.GetAll().ToList();
+            if (category == null)
+            {
+                products = context.GetAll().ToList();
+            }
+            else
+            {
+                products = context.GetAll().Where(p=> p.Category == category).ToList();
+            }
+
+            ProductListViewModel model = new ProductListViewModel();
+            model.Products = products;
+            model.ProductCategories = categories;
+
+            return View(model);
         }
 
         public ActionResult Details(string id)
