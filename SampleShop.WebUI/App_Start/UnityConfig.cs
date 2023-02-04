@@ -2,6 +2,7 @@ using SampleShop.Core.Contracts;
 using SampleShop.Core.Models;
 using SampleShop.DataAccess.InMemory;
 using SampleShop.DataAccess.SQL;
+using SampleShop.Services;
 using System;
 
 using Unity;
@@ -48,6 +49,9 @@ namespace SampleShop.WebUI
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IRepository<Product>, SQLRepository<Product>>();
             container.RegisterType<IRepository<ProductCategory>, SQLRepository<ProductCategory>>();
+            container.RegisterType<IRepository<Cart>, SQLRepository<Cart>>();
+            container.RegisterType<IRepository<CartItem>, SQLRepository<CartItem>>();
+            container.RegisterType<ICartService, CartService>();
         }
     }
 }

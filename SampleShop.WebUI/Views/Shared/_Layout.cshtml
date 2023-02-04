@@ -27,6 +27,9 @@
                     <li class="nav-item"><a href="/Account/Login" id="loginLink" class="nav-link">Log in</a></li>
                 </ul>*@
                 @Html.Partial("_LoginPartial")
+                @{
+                    Html.RenderAction("CartSummary", "Cart");
+                }
             </div>
         </div>
     </nav>

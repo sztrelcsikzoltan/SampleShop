@@ -1,0 +1,6 @@
+﻿@model SampleShop.Core.ViewModels.CartSummaryViewModel
+
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="@Url.Action("Index", "cart")">@Model.CartCount items</a></li>
+    <li style="margin-left:5px"><a href="@Url.Action("Index", "cart")">@String.Format("{0:c}", Model.CartTotal)</a></li>
+</ul>

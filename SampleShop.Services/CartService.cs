@@ -110,7 +110,7 @@ namespace SampleShop.Services
                               select new CartItemViewModel()
                               {
                                   Id = c.Id,
-                                  Quality = c.Quantity,
+                                  Quantity = c.Quantity,
                                   ProductName = p.Name,
                                   Image = p.Image,
                                   Price = p.Price
