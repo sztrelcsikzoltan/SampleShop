@@ -1,4 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SampleShop.Core.Contracts;
+using SampleShop.Core.Models;
+using SampleShop.Core.ViewModels;
 using SampleShop.WebUI;
 using SampleShop.WebUI.Controllers;
 using System;
@@ -12,17 +15,20 @@ namespace SampleShop.WebUI.Tests.Controllers
     [TestClass]
     public class HomeControllerTest
     {
-        [TestMethod]
-        public void Index()
+        [TestMethod] 
+        public void IndexPageReturnsProducts()
         {
-            // Arrange
-            //HomeController controller = new HomeController();
+            
+            IRepository<Product> productContext = new Mocks.MockContext<Product>();
+            IRepository<ProductCategory> productCategoryContext = new Mocks.MockContext<ProductCategory>();
+            HomeController controller = new HomeController(productContext, productCategoryContext);
 
-            //// Act
-            //ViewResult result = controller.Index() as ViewResult;
+            productContext.Create(new Product());
 
-            //// Assert
-            //Assert.IsNotNull(result);
+            var result = controller.Index() as ViewResult;
+            var viewModel = (ProductListViewModel)result.ViewData.Model;
+
+            Assert.AreEqual(1, viewModel.Products.Count());
         }
                 
     }
