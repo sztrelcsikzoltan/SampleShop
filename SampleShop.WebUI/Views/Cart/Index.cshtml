@@ -22,7 +22,9 @@
         <th>
             Line Total
         </th>
-        <th></th>
+        <th>
+            Actions
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -48,11 +50,14 @@
             </td>
         </tr>
     }
-    <tr>
-        <td colspan="4" style="text-align:right"><b>Cart Total</b></td>
-        <td>@String.Format("{0:c}", (from p in Model select p.Price * p.Quantity).Sum())</td>
-        <td>@Html.ActionLink("Back to List", "Index", "Home")</td>
-        <td></td>
-    </tr>
-
+<tr>
+    <td colspan="4" style="text-align:right"><b>Cart Total</b></td>
+    <td>@String.Format("{0:c}", (from p in Model select p.Price * p.Quantity).Sum())</td>
+    <td  style="min-width:100px">@Html.ActionLink("Back to List", "Index", "Home")</td>
+    <td></td>
+</tr>
+<tr>
+    <td colspan="5"></td>
+    <td><a href="@Url.Action("Checkout","Cart")">Checkout</a></td>
+</tr>
 </table>

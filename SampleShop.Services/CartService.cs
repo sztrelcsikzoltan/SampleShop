@@ -148,6 +148,13 @@ namespace SampleShop.Services
                 return model;
             }
         }
+
+        public void ClearCart(HttpContextBase httpContext)
+        {
+            Cart cart = GetCart(httpContext, false);
+            cart.CartItems.Clear();
+            cartContext.Commit();
+        }
                         
     }
 }
