@@ -7,6 +7,7 @@ using SampleShop.WebUI.Controllers;
 using SampleShop.WebUI.Tests.Mocks;
 using System;
 using System.Linq;
+using System.Security.Principal;
 using System.Web.Mvc;
 
 namespace SampleShop.WebUI.Tests.Controllers
@@ -21,12 +22,13 @@ namespace SampleShop.WebUI.Tests.Controllers
             IRepository<Cart> carts = new MockContext<Cart>();
             IRepository<Product> products = new MockContext<Product>();
             IRepository<Order> orders = new MockContext<Order>();
+            IRepository<Customer> customers= new MockContext<Customer>();
 
             var httpContext = new MockHttpContext();
 
             ICartService cartService = new CartService(products, carts);
             IOrderService orderService = new OrderService(orders);
-            var controller = new CartController(cartService, orderService);
+            var controller = new CartController(cartService, orderService, customers);
             controller.ControllerContext = new System.Web.Mvc.ControllerContext(httpContext, new System.Web.Routing.RouteData(), controller);
             
             // Act
@@ -47,12 +49,13 @@ namespace SampleShop.WebUI.Tests.Controllers
             IRepository<Cart> carts = new MockContext<Cart>();
             IRepository<Product> products = new MockContext<Product>();
             IRepository<Order> orders = new MockContext<Order>();
+            IRepository<Customer> customers = new MockContext<Customer>();
 
             var httpContext = new MockHttpContext();
 
             ICartService cartService = new CartService(products, carts);
             IOrderService orderService = new OrderService(orders);
-            var controller = new CartController(cartService, orderService);
+            var controller = new CartController(cartService, orderService, customers);
             controller.ControllerContext = new System.Web.Mvc.ControllerContext(httpContext, new System.Web.Routing.RouteData(), controller);
 
             // Act
@@ -74,6 +77,7 @@ namespace SampleShop.WebUI.Tests.Controllers
             IRepository<Cart> carts = new MockContext<Cart>();
             IRepository<Product> products = new MockContext<Product>();
             IRepository<Order> orders = new MockContext<Order>();
+            IRepository<Customer> customers = new MockContext<Customer>();
 
             products.Create(new Product() { Id="1", Price = 10.00m  });
             products.Create(new Product() { Id="2", Price = 1.00m  });
@@ -85,7 +89,7 @@ namespace SampleShop.WebUI.Tests.Controllers
 
             ICartService cartService = new CartService(products, carts);
             IOrderService orderService = new OrderService(orders);
-            var controller = new CartController(cartService, orderService);
+            var controller = new CartController(cartService, orderService, customers);
 
             var httpContext = new MockHttpContext();
             httpContext.Request.Cookies.Add( new System.Web.HttpCookie("eCommerceCart") { Value = cart.Id });
@@ -118,9 +122,15 @@ namespace SampleShop.WebUI.Tests.Controllers
 
             IRepository<Order> orders = new MockContext<Order>();
             IOrderService orderService = new OrderService(orders);
+            IRepository<Customer> customers = new MockContext<Customer>();
 
-            var controller = new CartController(cartService, orderService);
+            customers.Create(new Customer() { Id = "1", Email= "client99@gmail.com", ZipCode = "1053" });
+
+            IPrincipal FakeUser = new GenericPrincipal(new GenericIdentity("client99@gmail.com", "Forms"), null);
+
+            var controller = new CartController(cartService, orderService, customers);
             var httpContext = new MockHttpContext();
+            httpContext.User = FakeUser;
             httpContext.Request.Cookies.Add(new System.Web.HttpCookie("eCommerceCart")
             {
                 Value = cart.Id

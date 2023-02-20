@@ -11,13 +11,15 @@ namespace SampleShop.WebUI.Controllers
 {
     public class CartController : Controller
     {
+        IRepository<Customer> customers;
         ICartService cartService;
         IOrderService orderService;
 
-        public CartController(ICartService cartService, IOrderService orderService)
+        public CartController(ICartService cartService, IOrderService orderService, IRepository<Customer> customers)
         {
             this .cartService = cartService;
             this .orderService = orderService;
+            this .customers = customers;
         }
         // GET: Cart
         public ActionResult Index()
@@ -47,16 +49,36 @@ namespace SampleShop.WebUI.Controllers
             return PartialView(cartSummary);
         }
 
+        [Authorize]
         public ActionResult Checkout()
         {
-            return View();
+            Customer customer = customers.GetAll().FirstOrDefault(c => c.Email == User.Identity.Name);
+            
+            if (customer == null)
+            {
+                return RedirectToAction("Error");
+            }
+            
+            Order order = new Order()
+            {
+                Email = customer.Email,
+                City = customer.City,
+                State = customer.State,
+                Street = customer.Street,
+                FirstName = customer.FirsName,
+                LastName = customer.FirsName,
+                ZipCode = customer.ZipCode
+            };
+            return View(order);
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Checkout(Order order)
         {
             var cartItems = cartService.GetCartItems(this.HttpContext);
             order.OrderStatus = "Order created.";
+            order.Email = User.Identity.Name;
 
             // payment process
             order.OrderStatus = "Payment processed";
