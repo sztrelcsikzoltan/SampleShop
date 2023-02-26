@@ -8,25 +8,28 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="mt-2">
-    <nav class="navbar navbar-expand-lg  navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             @* <a class="navbar-brand" href="/">Application name</a>*@
-            @Html.ActionLink("My Web Portal", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @*@Html.ActionLink("My Web Portal", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             <div class="navbar-collapse collapse" id="navbarSupportedContent">
                 <ul class="nav navbar-nav me-auto">
                     <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Product Manager", "Index", "ProductManager", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Category Manager", "Index", "ProductCategoryManager", null, new { @class = "nav-link" })</li>
+                    @*<li class="nav-item">@Html.ActionLink("Product Manager", "Index", "ProductManager", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Category Manager", "Index", "ProductCategoryManager", null, new { @class = "nav-link" })</li>*@
                     <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Admin", "Index", "Admin", null, new { @class = "nav-link" })</li>
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                      <li class="nav-item">@Html.ActionLink("Admin", "Index", "Admin", null, new { @class = "nav-link" })</li>
+                    }
                 </ul>
                 @*<ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item"><a href="/Account/Register" id="registerLink" class="nav-link">Register</a></li>
-                    <li class="nav-item"><a href="/Account/Login" id="loginLink" class="nav-link">Log in</a></li>
-                </ul>*@
+                        <li class="nav-item"><a href="/Account/Register" id="registerLink" class="nav-link">Register</a></li>
+                        <li class="nav-item"><a href="/Account/Login" id="loginLink" class="nav-link">Log in</a></li>
+                    </ul>*@
                 @Html.Partial("_LoginPartial")
                 @{
                     Html.RenderAction("CartSummary", "Cart");

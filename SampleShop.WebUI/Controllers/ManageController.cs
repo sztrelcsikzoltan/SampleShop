@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -18,6 +19,9 @@ namespace SampleShop.WebUI.Controllers
 
         public ManageController()
         {
+            // add role or claim to user, but User is here null, it must be done within an actiion!?
+            // _userManager.AddToRole(User.Identity.GetUserId(), "Customer");
+            // _userManager.AddClaim(User.Identity.GetUserId(), new Claim(ClaimTypes.Role, "Customer"));
         }
 
         public ApplicationSignInManager SignInManager
